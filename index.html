@@ -1062,67 +1062,75 @@
                 left: 18px !important;
             }
         }
-    /* ========= STILI GALLERIA FOTO (CON ESPANSIONE COMPLETA - v3 Corretto) ========= */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
-}
+    /* ========= STILI SLIDESHOW AUTOMATICO ========= */
+    .slideshow-container {
+        max-width: 900px; /* Larghezza massima dello slideshow */
+        position: relative;
+        margin: 40px auto; /* Centra lo slideshow e aggiunge spazio sopra/sotto */
+        overflow: hidden; /* Nasconde le immagini che non sono attive */
+        border-radius: 15px; /* Angoli arrotondati */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        background-color: #f0f0f0; /* Sfondo mentre carica */
+        aspect-ratio: 16 / 9; /* Formato comune per slideshow, puoi cambiarlo se preferisci (es. 4/3) */
+    }
 
-.gallery-item {
-    position: relative; /* Cruciale per posizionare immagine interna */
-    overflow: hidden; /* Nasconde le parti eccedenti QUANDO NON in hover */
-    border-radius: 12px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    /* Rimuoviamo transizione transform dal contenitore */
-    transition: box-shadow 0.3s ease, z-index 0s 0.3s ease; /* Ritarda il cambio di z-index */
-    background-color: #f0f0f0; 
-    aspect-ratio: 1 / 1; 
-    z-index: 1; /* Default z-index */
-}
+    .slide {
+        display: none; /* Nasconde tutte le slide di default */
+        width: 100%;
+        height: 100%;
+        animation: fadeEffect 1.5s ease-in-out; /* Effetto dissolvenza */
+    }
 
-/* Regola base per immagine */
-div.gallery-item img { /* Aggiunto div per specificita */
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Mantiene immagine tagliata di base */
-    display: block;
-    border-radius: inherit; /* Eredita rotondita del contenitore */
-    /* Transizione SOLO per scale e opacita (la forma cambia subito) */
-    transition: transform 0.3s ease, opacity 0.3s ease; 
-}
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Copre l'area senza distorcere (potrebbe tagliare un po') */
+        /* Se preferisci vedere l'immagine intera con bande laterali/sopra: object-fit: contain; */
+        display: block; /* Rimuove spazio extra sotto l'immagine */
+    }
 
-/* === NUOVE REGOLE PER HOVER SPECIFICHE === */
+    /* Animazione dissolvenza */
+    @keyframes fadeEffect {
+        from { opacity: 0.4; }
+        to { opacity: 1; }
+    }
 
-div.gallery-item:hover { /* Aggiunto div */
-    overflow: visible; /* Permette a immagine di uscire dai bordi */
-    z-index: 15; /* Porta il contenitore sopra gli altri durante hover */
-    box-shadow: none; /* Rimuove ombra dal contenitore base durante hover */
-}
+    /* (Opzionale) Stile per le didascalie se le vuoi aggiungere */
+    .slide-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 0.9em;
+    }
 
-/* Regole per immagine DURANTE hover */
-div.gallery-item:hover img { /* Aggiunto div */
-    position: absolute; /* Sgancia immagine dal flusso normale */
-    top: 50%; /* Posiziona punto centrale immagine... */
-    left: 50%; /* ...al centro del contenitore originale */
-    width: auto; /* Usa larghezza intrinseca immagine */
-    height: auto; /* Usa altezza intrinseca immagine */
-    max-width: 200%; /* Limita espansione massima (es. 2x larghezza cella) */
-    max-height: 200%; /* Limita espansione massima (es. 2x altezza cella) */
-    object-fit: contain; /* Assicura che immagine sia INTERA */
-    /* Centra immagine rispetto al suo punto centrale e la scala un po */
-    transform: translate(-50%, -50%) scale(1.1); 
-    z-index: 20; /* Mette immagine espansa sopra a tutto */
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); /* Ombra su immagine espansa */
-    border-radius: 8px; /* Leggero arrotondamento per immagine espansa */
-    /* Forziamo a NON fare transizioni su queste proprieta per evitare glitch */
-    transition-property: transform, opacity, box-shadow; 
-    transition-duration: 0.3s;
-    transition-timing-function: ease;
-}
-/* ========= FINE STILI GALLERIA FOTO ========= */
-</style>
+    /* (Opzionale) Puntini di navigazione */
+    .dots-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .dot {
+        cursor: pointer;
+        height: 13px;
+        width: 13px;
+        margin: 0 4px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+    .dot.active, .dot:hover {
+        background-color: #717171;
+    }
+    /* ========= FINE STILI SLIDESHOW AUTOMATICO ========= */
+
+    </style>
 </head>
 <body>
     <div class="container">
@@ -1147,8 +1155,8 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="home" class="tab-content active">
-            <h2 class="section-title">Benvenuti al Mendel!</h2>
-            
+             <h2 class="section-title">Benvenuti al Mendel!</h2>
+
             <div class="openday-highlight">
                 <h4>Benvenuti all'IIS Mendel!</h4>
                 <p>Scoprite le eccellenze del nostro Istituto! Siamo qui per rispondere a tutte le vostre domande e guidarvi nella scelta del vostro futuro.</p>
@@ -1172,7 +1180,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                 <p style="font-weight: 700; font-size: 1.1em; color: #2e7d32; text-align: center;">
                     ORARIO INIZIO LEZIONI: 8.30 (Classi Prime: 33h | Classi 2ª-5ª: 32h)
                 </p>
-                
+
                 <table class="schedule-table" style="margin-top: 20px;">
                     <thead>
                         <tr>
@@ -1286,7 +1294,7 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="storia" class="tab-content">
-            <h2 class="section-title">Breve Storia dell'IIS Mendel</h2>
+             <h2 class="section-title">Breve Storia dell'IIS Mendel</h2>
             <div class="highlight floating">
                 <h4>Radici Profonde, Visione Futura</h4>
                 <p>L'Istituto Mendel unisce la ricca tradizione rurale del territorio con l'innovazione scientifica e didattica, formando professionisti in linea con le sfide dell'agricoltura moderna.</p>
@@ -1301,7 +1309,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                         <p>Fondazione dell'Istituto Agrario per volere di **Francesco Ferrazzi** e inaugurazione della sede e dell'Azienda Agraria annessa (oggi Ferrazzi-Cova), con l'obiettivo di "attuare e sperimentare nella pratica dei campi gli insegnamenti della scienza".</p>
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -1310,7 +1318,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                         <p>Ampliamento dell'offerta formativa con l'introduzione del percorso di **Istituto Tecnico Agrario**, consolidando la vocazione scientifica e professionale dell'ente.</p>
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -1319,7 +1327,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                         <p>L'Istituto viene intitolato a **Gregor Johann Mendel**, padre della genetica, sottolineando il legame tra l'agricoltura e le discipline scientifiche moderne (biologia e biotecnologie).</p>
                     </div>
                 </div>
-                
+
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
@@ -1336,41 +1344,41 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="tecnico" class="tab-content">
-            <h2 class="section-title">Istituto Tecnico Agrario</h2>
-            
+             <h2 class="section-title">Istituto Tecnico Agrario</h2>
+
             <div style="text-align: center; margin-bottom: 40px;">
                 <a href="https://agrariomendel.edu.it/la-scuola/organizzazione/112-istituto-tecnico" class="btn" target="_blank">
                     <span>🌐 Visita la pagina ufficiale dell'Istituto Tecnico</span>
                 </a>
             </div>
-            
+
             <div class="highlight">
                 <h4>Indirizzo: Agraria, Agroalimentare e Agroindustria</h4>
                 <p><strong>Durata:</strong> 5 anni | <strong>Diploma:</strong> Perito Agrario | <strong>Orario:</strong> 33 ore (1° anno), 32 ore (anni successivi)</p>
             </div>
 
             <h3 style="color: #11998e; margin-top: 40px; font-size: 2em;">🎓 Articolazioni del Secondo Biennio e Quinto Anno</h3>
-            
+
             <div class="grid">
                 <div class="card">
                     <h3>GAT - Gestione Ambiente e Territorio</h3>
                     <p>Conoscenza delle diverse tipologie di agricoltura. Conservazione e tutela del territorio attraverso buone pratiche di agricoltura. Studio degli ambienti geografici ecologici e territoriali. Sostenibilità ambientale.</p>
                 </div>
-                
+
                 <div class="card">
                     <h3>PT - Produzioni e Trasformazioni</h3>
                     <p>Tecniche produttive tradizionali e innovative. Conoscenza e organizzazione del mercato agricolo. Trasformazione dei prodotti agricoli e tutela della qualità delle produzioni agroalimentari. Biotecnologie applicate alla difesa delle colture e alle trasformazioni alimentari.</p>
                 </div>
             </div>
-            
+
             <h3 style="color: #11998e; margin-top: 50px; font-size: 2em; text-align: center;">📋 Dettaglio Orario Settimanale (Curriculum)</h3>
-            
+
             <div class="toggle-buttons">
-                <button class="toggle-btn" id="btn-biennio-1" onclick="toggleTables('primo-biennio-orari', 'btn-biennio-1')">1° Biennio (Comune)</button>
+                <button class="toggle-btn active" id="btn-biennio-1" onclick="toggleTables('primo-biennio-orari', 'btn-biennio-1')">1° Biennio (Comune)</button>
                 <button class="toggle-btn" id="btn-biennio-2-comparison" onclick="toggleTables('biennio-2-gat-pt-comparison', 'btn-biennio-2-comparison')">2° Biennio & 5° Anno (Confronto GAT vs PT)</button>
             </div>
-            
-            <div id="primo-biennio-orari" class="orari-section">
+
+            <div id="primo-biennio-orari" class="orari-section" style="display: block;">
                 <h4 style="color: #11998e; margin-bottom: 15px; text-align: center;">PRIMO BIENNIO: Insegnamenti Generali e di Indirizzo (Comune)</h4>
                 <p style="font-size: 0.9em; margin-bottom: 20px; text-align: center;">
                     Totale ore settimanali: **1° Anno = 33** | **2° Anno = 32**.
@@ -1413,7 +1421,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                 <div class="card" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); margin-bottom: 20px; padding: 20px;">
                     <p style="font-size: 1.1em; color: #1565c0; text-align: center;">Gli <strong>Insegnamenti Generali (15 ore)</strong> sono identici per GAT e PT in tutti e tre gli anni (3°, 4°, 5°). L'unica differenza di ore si riscontra nella disciplina di <strong>Produzione Animale</strong> al 5° anno.</p>
                 </div>
-                
+
                 <table class="comparison-table">
                     <thead>
                         <tr>
@@ -1428,10 +1436,10 @@ div.gallery-item:hover img { /* Aggiunto div */
                     <tbody>
                         <tr class="general-header"><td colspan="6" data-label="Area">INSEGNAMENTI GENERALI (Totale 15 ore)</td></tr>
                         <tr><td data-label="DISCIPLINA">Italiano, Storia, Inglese, Matematica, Scienze Motorie, Religione (totale)</td><td data-label="3° ANNO (Ore)">15</td><td data-label="4° ANNO (Ore)">15</td><td data-label="5° ANNO (GAT) (Ore)">15</td><td data-label="5° ANNO (PT) (Ore)">15</td><td data-label="DIFFERENZA (5° Anno)">Nessuna</td></tr>
-                        
+
                         <tr class="general-header"><td colspan="6" data-label="Area">MATERIE D'INDIRIZZO (Totale 17 ore)</td></tr>
                         <tr><td data-label="DISCIPLINA">Complementi di matematica</td><td data-label="3° ANNO (Ore)">1</td><td data-label="4° ANNO (Ore)">1</td><td data-label="5° ANNO (GAT) (Ore)">-</td><td data-label="5° ANNO (PT) (Ore)">-</td><td data-label="DIFFERENZA (5° Anno)">Nessuna</td></tr>
-                        
+
                         <tr class="diff-row">
                             <td data-label="DISCIPLINA" style="text-align: left;">**Produzione animale**</td>
                             <td data-label="3° ANNO (Ore)">3</td>
@@ -1440,13 +1448,13 @@ div.gallery-item:hover img { /* Aggiunto div */
                             <td data-label="5° ANNO (PT) (Ore)" class="diff-cell-pt">**3**</td>
                             <td data-label="DIFFERENZA (5° Anno)" class="diff-highlight">**PT ha +1 ora**</td>
                         </tr>
-                        
+
                         <tr><td data-label="DISCIPLINA">Produzioni vegetali</td><td data-label="3° ANNO (Ore)">5</td><td data-label="4° ANNO (Ore)">4</td><td data-label="5° ANNO (GAT) (Ore)">4</td><td data-label="5° ANNO (PT) (Ore)">4</td><td data-label="DIFFERENZA (5° Anno)">Nessuna</td></tr>
                         <tr><td data-label="DISCIPLINA">Trasformazione dei prodotti</td><td data-label="3° ANNO (Ore)">2</td><td data-label="4° ANNO (Ore)">2</td><td data-label="5° ANNO (GAT) (Ore)">2</td><td data-label="5° ANNO (PT) (Ore)">2</td><td data-label="DIFFERENZA (5° Anno)">Nessuna</td></tr>
                         <tr><td data-label="DISCIPLINA">Economia, estimo, marketing e legislazione</td><td data-label="3° ANNO (Ore)">2</td><td data-label="4° ANNO (Ore)">3</td><td data-label="5° ANNO (GAT) (Ore)">3</td><td data-label="5° ANNO (PT) (Ore)">3</td><td data-label="DIFFERENZA (5° Anno)">Nessuna</td></tr>
                         <tr><td data-label="DISCIPLINA">Genio rurale</td><td data-label="3° ANNO (Ore)">2</td><td data-label="4° ANNO (Ore)">2</td><td data-label="5° ANNO (GAT) (Ore)">2</td><td data-label="5° ANNO (PT) (Ore)">2</td><td data-label="DIFFERENZA (5° Anno)">Nessuna</td></tr>
                         <tr><td data-label="DISCIPLINA">Biotecnologie agrarie</td><td data-label="3° ANNO (Ore)">2</td><td data-label="4° ANNO (Ore)">2</td><td data-label="5° ANNO (GAT) (Ore)">-</td><td data-label="5° ANNO (PT) (Ore)">-</td><td data-label="DIFFERENZA (5° Anno)">Nessuna</td></tr>
-                        
+
                         <tr class="diff-row">
                             <td data-label="DISCIPLINA" style="text-align: left;">**Disciplina di Articolazione**</td>
                             <td data-label="3° ANNO (Ore)">-</td>
@@ -1455,7 +1463,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                             <td data-label="5° ANNO (PT) (Ore)" class="diff-cell-pt">**4** (PT)</td>
                             <td data-label="DIFFERENZA (5° Anno)">Nessuna</td>
                         </tr>
-                        
+
                         <tr class="total-row"><td data-label="DISCIPLINA" style="font-weight: 700; background: none !important;">TOTALE ORE INDIRIZZO</td><td data-label="3° ANNO (Ore)" style="font-weight: 700; background: none !important;">17</td><td data-label="4° ANNO (Ore)" style="font-weight: 700; background: none !important;">17</td><td data-label="5° ANNO (GAT) (Ore)" style="font-weight: 700; background: none !important;">17</td><td data-label="5° ANNO (PT) (Ore)" style="font-weight: 700; background: none !important;">17</td><td data-label="DIFFERENZA (5° Anno)">Nessuna</td></tr>
 
                         <tr class="total-row" style="background: linear-gradient(135deg, #a7e0d4, #b9f7d0) !important;">
@@ -1512,21 +1520,21 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="professionale" class="tab-content">
-            <h2 class="section-title">Professionale Statale e Istruzione e Formazione Professionale (IEFP)</h2>
-            
+             <h2 class="section-title">Professionale Statale e Istruzione e Formazione Professionale (IEFP)</h2>
+
             <div style="text-align: center; margin-bottom: 40px;">
                 <a href="https://agrariomendel.edu.it/la-scuola/organizzazione/113-istituto-professionale" class="btn" target="_blank">
                     <span>🌐 Visita la pagina ufficiale dell'Istituto Professionale</span>
                 </a>
             </div>
-            
+
             <div class="highlight">
                 <h4>Percorso Regionale - Operatore e Tecnico Agricolo</h4>
                 <p><strong>Triennio:</strong> Qualifica di Operatore Agricolo (470 ore stage) | <strong>4° Anno:</strong> Diploma Tecnico Agricolo (210 ore stage)</p>
             </div>
 
             <h3 style="color: #11998e; margin-top: 40px; font-size: 2em;">📋 Struttura del percorso</h3>
-            
+
             <div class="grid">
                 <div class="card">
                     <h3>Triennio (I-II-III anno)</h3>
@@ -1535,7 +1543,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                     <p><strong>Stage:</strong> Minimo 470 ore nel triennio</p>
                     <p><strong>Orario:</strong> 32 ore settimanali</p>
                 </div>
-                
+
                 <div class="card">
                     <h3>Quarto Anno</h3>
                     <p><strong>Titolo conseguito:</strong> Diploma di TECNICO AGRICOLO</p>
@@ -1606,21 +1614,21 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="ida" class="tab-content">
-            <h2 class="section-title">Corsi Serali - IDA (Istruzione degli Adulti)</h2>
-            
+             <h2 class="section-title">Corsi Serali - IDA (Istruzione degli Adulti)</h2>
+
             <div style="text-align: center; margin-bottom: 40px;">
                 <a href="https://agrariomendel.edu.it/la-scuola/organizzazione/114-corsi-serali-ida-istruzione-degli-adulti" class="btn" target="_blank">
                     <span>🌐 Visita la pagina ufficiale dei Corsi Serali IDA</span>
                 </a>
             </div>
-            
+
             <div class="highlight">
                 <h4>Percorsi per adulti, lavoratori e diplomati</h4>
                 <p><strong>Orario:</strong> Serale (22 ore settimanali) | <strong>Iscrizioni:</strong> Gennaio/Febbraio (Ordinario) - 15 Ottobre (Straordinario)</p>
             </div>
 
             <h3 style="color: #11998e; margin-top: 40px; font-size: 2em;">📚 Offerta formativa IDA</h3>
-            
+
             <div class="grid">
                 <div class="card">
                     <h3>IDA - Istituto Tecnico</h3>
@@ -1629,7 +1637,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                     <p><strong>Requisiti:</strong> Aver frequentato almeno una classe del triennio o esami integrativi</p>
                     <p><strong>Assenza PCTO</strong> (Formazione Scuola-Lavoro)</p>
                 </div>
-                
+
                 <div class="card">
                     <h3>IDA - Istruzione Professionale</h3>
                     <p><strong>Attivo:</strong> I, II, III, IV anno (triennio) + V anno integrativo</p>
@@ -1676,15 +1684,15 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="pcto" class="tab-content">
-            <h2 class="section-title">Formazione Scuola-Lavoro (Ex PCTO)</h2>
-            
+             <h2 class="section-title">Formazione Scuola-Lavoro (Ex PCTO)</h2>
+
             <div class="highlight">
                 <h4>🎯 Esperienza pratica nel mondo del lavoro</h4>
                 <p>La Formazione Scuola-Lavoro è un'esperienza formativa che unisce sapere e saper fare, orienta le aspirazioni degli studenti e apre possibilità di sbocchi lavorativi.</p>
             </div>
 
             <h3 style="color: #11998e; margin-top: 40px; font-size: 2em;">📊 Monte ore per indirizzo</h3>
-            
+
             <div class="grid">
                 <div class="card">
                     <h3>Istituto Tecnico</h3>
@@ -1694,7 +1702,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                         <li>Ore rimanenti di stage estivo esterno</li>
                     </ul>
                 </div>
-                
+
                 <div class="card">
                     <h3>IEFP Regionale</h3>
                     <p><strong>Triennio:</strong> 470 ore</p>
@@ -1707,7 +1715,7 @@ div.gallery-item:hover img { /* Aggiunto div */
             </div>
 
             <h3 style="color: #11998e; margin-top: 40px; font-size: 2em;">🏢 Le nostre aziende convenzionate</h3>
-            
+
             <div class="card special-card light floating">
                 <h3>🎉 Oltre 300 aziende convenzionate!</h3>
                 <p>La vasta rete di partner garantisce opportunità diversificate per tutti i percorsi.</p>
@@ -1741,7 +1749,7 @@ div.gallery-item:hover img { /* Aggiunto div */
             </div>
 
             <h3 style="color: #11998e; margin-top: 40px; font-size: 2em;">🌟 Attività presso l'Istituto Mendel</h3>
-            
+
             <div class="card">
                 <ul>
                     <li><strong>Stage presso l'Azienda Ferrazzi-Cova</strong> - Esperienza pratica diretta</li>
@@ -1947,7 +1955,7 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="internazionalizzazione" class="tab-content">
-            <h2 class="section-title">Internazionalizzazione</h2>
+             <h2 class="section-title">Internazionalizzazione</h2>
             
             <div class="highlight floating">
                 <h4>✈️ Il Mendel aperto al mondo</h4>
@@ -2123,7 +2131,7 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="inclusione" class="tab-content">
-            <h2 class="section-title">Inclusione Scolastica</h2>
+             <h2 class="section-title">Inclusione Scolastica</h2>
             
             <div class="highlight floating">
                 <h4>💚 Azioni della scuola per l'inclusione (DSA, BES, Disabilità)</h4>
@@ -2177,7 +2185,7 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
 
         <div id="ptof" class="tab-content">
-            <h2 class="section-title">Il Nostro PTOF (2025-2028)</h2>
+             <h2 class="section-title">Il Nostro PTOF (2025-2028)</h2>
             
             <div class="highlight floating">
                 <h4>📋 Piano Triennale dell'Offerta Formativa 2025-2028</h4>
@@ -2240,7 +2248,7 @@ div.gallery-item:hover img { /* Aggiunto div */
         </div>
         
         <div id="dovesiamo" class="tab-content">
-            <h2 class="section-title">📍 Dove Siamo e Contatti</h2>
+             <h2 class="section-title">📍 Dove Siamo e Contatti</h2>
             
             <div class="highlight floating">
                 <h4>Trova l'IIS Mendel a Villa Cortese</h4>
@@ -2261,7 +2269,7 @@ div.gallery-item:hover img { /* Aggiunto div */
                 <a href="https://www.trenitalia.com/it.html" target="_blank" class="btn" style="padding: 15px 30px; font-size: 1em; background: #e30013; box-shadow: 0 4px 15px rgba(227, 0, 19, 0.4);">
                     <span>🚂 Trenitalia</span>
                 </a>
-                <a href="httpswww.trenord.it/" target="_blank" class="btn" style="padding: 15px 30px; font-size: 1em; background: #009944; box-shadow: 0 4px 15px rgba(0, 153, 68, 0.4);">
+                <a href="https://www.trenord.it/" target="_blank" class="btn" style="padding: 15px 30px; font-size: 1em; background: #009944; box-shadow: 0 4px 15px rgba(0, 153, 68, 0.4);">
                     <span>🚆 Trenord</span>
                 </a>
             </div>
@@ -2353,166 +2361,301 @@ div.gallery-item:hover img { /* Aggiunto div */
             
             <div class="highlight floating">
                 <h4>Uno Sguardo sul Mendel</h4>
-                <p>Esplora i nostri spazi, le attività e i momenti di creatività. Passa il mouse su una foto per ingrandirla!</p>
+                <p>Esplora i nostri spazi, le attività e i momenti di creatività.</p> 
             </div>
         
-            <div class="gallery-grid">
-            
-                <div class="gallery-item"><img src="coreografia.jpg" alt="Coreografi afatta dai ragazzi del Mendel e ripresa da un drone"></div>
-                <div class="gallery-item"><img src="labpt1.jpg" alt="Laboratorio trasformazioni"></div>
-                <div class="gallery-item"><img src="labpt2.jpg" alt="Macchinari lab"></div>
-                
-                <div class="gallery-item"><img src="labpt3.jpg" alt="Altri macchinari per la produzione e la trasformazione"></div>
-                <div class="gallery-item"><img src="labpt4.jpg" alt="Cella frigorifera modulare"></div>
-                <div class="gallery-item"><img src="edificio5.JPG" alt="Plesso nuovo"></div>
-                <div class="gallery-item"><img src="edificio4.JPG" alt="Plesso originale"></div>
-                <div class="gallery-item"><img src="edificio3.JPG" alt="Vista serra dal cortile"></div>
-                <div class="gallery-item"><img src="edificio2.JPG" alt="Cortile"></div>
-                <div class="gallery-item"><img src="Aula magna.jpg" alt="Aula magna con 100 posti"></div>
-                <div class="gallery-item"><img src="idroponica.jpg" alt="Serra idroponica"></div>
-                <div class="gallery-item"><img src="labbio1.jpg" alt="Nuovo lab di biotecnologie"></div>
-                <div class="gallery-item"><img src="serra7.JPG" alt="Interno serra 1"></div>
-                <div class="gallery-item"><img src="serra.jpg" alt="Interno serra 2"></div>
-                <div class="gallery-item"><img src="serra5.jpg" alt="Esterno serra "></div>
-                <div class="gallery-item"><img src="stelle_natale.jpg" alt="Prodotti serra per Natale"></div>
-                <div class="gallery-item"><img src="trattore1.jpg" alt="Uno dei nostri nuovi trattori"></div>
-                <div class="gallery-item"><img src="inclusione.jpg" alt="L'inclusione è un nostro punto di forza"></div>
-                <div class="gallery-item"><img src="mercatino1.jpg" alt="Alcuni prodotti mercatino Natale 1"></div>
-                <div class="gallery-item"><img src="mercatino2.jpg" alt="Alcuni prodotti mercatino Natale 2"></div>
-                <div class="gallery-item"><img src="prodotti4.jpg" alt="lcuni prodotti mercatino Natale 3"></div>
-                <div class="gallery-item"><img src="prodotti1.jpg" alt="lcuni prodotti mercatino Natale 4"></div>
-                <div class="gallery-item"><img src="creatività.jpg" alt="Progetto ceratività Natale 1"></div>
-                <div class="gallery-item"><img src="creatività2.jpg" alt="Progetto ceratività Natale 2"></div>
-                <div class="gallery-item"><img src="mamma_andrea.jpg" alt="Incontro con la mamma di Andrea"></div>
-                <div class="gallery-item"><img src="Foto_Don_Burgio_blur.jpg" alt="Incontro con i ragazzi di Don Burgio"></div>
-                <div class="gallery-item"><img src="utah_5A.jpg" alt="Progetto Utah"></div>
-                <div class="gallery-item"><img src="irlanda.jpg" alt="Stage Irlanda"></div>
-                <div class="gallery-item"><img src="irlanda4.jpg" alt="Nostra scuola in Irlanda"></div>
-                <div class="gallery-item"><img src="cliffs.jpg" alt="Moher in Irlanda"></div>
-                <div class="gallery-item"><img src="aule.jpg" alt="Aule TEAL"></div>
-                <div class="gallery-item"><img src="azienda1.jpg" alt="Uno scorcio della nostra azienda"></div>
-                <div class="gallery-item"><img src="binario21.JPG" alt="Visita al Binario 21"></div>
-                <div class="gallery-item"><img src="bar.jpg" alt="Il nostro bar"></div>
-                <div class="gallery-item"><img src="diplomati.jpg" alt="Festa diplomati luglio 2025"></div>
-                </div> <div class="footer-credit">
+            <div class="slideshow-container">
+
+                <div class="slide">
+                    <img src="coreografia.jpg" alt="Coreografia fatta dai ragazzi del Mendel e ripresa da un drone">
+                </div>
+                <div class="slide">
+                    <img src="labpt1.jpg" alt="Laboratorio trasformazioni">
+                </div>
+                <div class="slide">
+                    <img src="labpt2.jpg" alt="Macchinari lab">
+                </div>
+                <div class="slide">
+                    <img src="labpt3.jpg" alt="Altri macchinari per la produzione e la trasformazione">
+                </div>
+                <div class="slide">
+                    <img src="labpt4.jpg" alt="Cella frigorifera modulare">
+                </div>
+                <div class="slide">
+                    <img src="edificio5.JPG" alt="Plesso nuovo">
+                </div>
+                <div class="slide">
+                    <img src="edificio4.JPG" alt="Plesso originale">
+                </div>
+                <div class="slide">
+                    <img src="edificio3.JPG" alt="Vista serra dal cortile">
+                </div>
+                <div class="slide">
+                    <img src="edificio2.JPG" alt="Cortile">
+                </div>
+                <div class="slide">
+                    <img src="Aula magna.jpg" alt="Aula magna con 100 posti">
+                </div>
+                <div class="slide">
+                    <img src="idroponica.jpg" alt="Serra idroponica">
+                </div>
+                <div class="slide">
+                    <img src="labbio1.jpg" alt="Nuovo lab di biotecnologie">
+                </div>
+                <div class="slide">
+                    <img src="serra7.JPG" alt="Interno serra 1">
+                </div>
+                <div class="slide">
+                    <img src="serra.jpg" alt="Interno serra 2">
+                </div>
+                <div class="slide">
+                    <img src="serra5.jpg" alt="Esterno serra ">
+                </div>
+                <div class="slide">
+                    <img src="stelle_natale.jpg" alt="Prodotti serra per Natale">
+                </div>
+                <div class="slide">
+                    <img src="trattore1.jpg" alt="Uno dei nostri nuovi trattori">
+                </div>
+                <div class="slide">
+                    <img src="inclusione.jpg" alt="L'inclusione è un nostro punto di forza">
+                </div>
+                <div class="slide">
+                    <img src="mercatino1.jpg" alt="Alcuni prodotti mercatino Natale 1">
+                </div>
+                <div class="slide">
+                    <img src="mercatino2.jpg" alt="Alcuni prodotti mercatino Natale 2">
+                </div>
+                <div class="slide">
+                    <img src="prodotti4.jpg" alt="lcuni prodotti mercatino Natale 3">
+                </div>
+                <div class="slide">
+                    <img src="prodotti1.jpg" alt="lcuni prodotti mercatino Natale 4">
+                </div>
+                <div class="slide">
+                    <img src="creatività.jpg" alt="Progetto ceratività Natale 1">
+                </div>
+                <div class="slide">
+                    <img src="creatività2.jpg" alt="Progetto ceratività Natale 2">
+                </div>
+                <div class="slide">
+                    <img src="mamma_andrea.jpg" alt="Incontro con la mamma di Andrea">
+                </div>
+                <div class="slide">
+                    <img src="Foto_Don_Burgio_blur.jpg" alt="Incontro con i ragazzi di Don Burgio">
+                </div>
+                <div class="slide">
+                    <img src="utah_5A.jpg" alt="Progetto Utah">
+                </div>
+                <div class="slide">
+                    <img src="irlanda.jpg" alt="Stage Irlanda">
+                </div>
+                <div class="slide">
+                    <img src="irlanda4.jpg" alt="Nostra scuola in Irlanda">
+                </div>
+                <div class="slide">
+                    <img src="cliffs.jpg" alt="Moher in Irlanda">
+                </div>
+                <div class="slide">
+                    <img src="aule.jpg" alt="Aule TEAL">
+                </div>
+                <div class="slide">
+                    <img src="azienda1.jpg" alt="Uno scorcio della nostra azienda">
+                </div>
+                <div class="slide">
+                    <img src="binario21.JPG" alt="Visita al Binario 21">
+                </div>
+                <div class="slide">
+                    <img src="bar.jpg" alt="Il nostro bar">
+                </div>
+                <div class="slide">
+                    <img src="diplomati.jpg" alt="Festa diplomati luglio 2025">
+                </div>
+
+            </div>
+            <br>
+
+            <div class="dots-container" style="text-align:center">
+                </div>
+            <div class="footer-credit">
                 <p>Questa pagina è stata creata dall'IIS MENDEL - Villa Cortese (MI)</p>
             </div>
-        </div>
-        </div> <script>
+        </div> </div> <script>
+        // Funzioni per gestire le TAB principali
         function showTab(tabName) {
-            // console.log("Switching to tab:", tabName); // Uncomment for debugging if needed
-
-            // Hide all tab contents
+            // Nascondi tutti i contenuti delle tab
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => {
                 if (content) content.classList.remove('active');
             });
 
-            // Deactivate all tab buttons
+            // Disattiva tutti i pulsanti delle tab
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 if (tab) tab.classList.remove('active');
             });
 
-            // Show the selected tab content
+            // Mostra il contenuto della tab selezionata
             const selectedContent = document.getElementById(tabName);
             if (selectedContent) {
                 selectedContent.classList.add('active');
             } else {
-                console.error("Content div not found for tab:", tabName); // Error if ID is wrong
-                return; // Stop if content div doesn't exist
+                console.error("Content div not found for tab:", tabName); 
+                return; 
             }
 
-            // Activate the selected tab button
+            // Attiva il pulsante della tab selezionata
             const activeTabButton = document.querySelector(`.tab[onclick="showTab('${tabName}')"]`);
             if (activeTabButton) {
                 activeTabButton.classList.add('active');
             }
 
-            // Scroll to top
+            // Scrolla all'inizio della pagina
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Handle special logic for 'tecnico' tab's inner toggles
-            // Resetting affects only elements inside #tecnico, so it's safe to call.
-            resetToggleButtons(); 
+            // Gestione dei toggle interni alla tab 'tecnico'
+            resetToggleButtons(); // Resetta sempre i toggle quando si cambia tab
             if (tabName === 'tecnico') {
-                // Try to activate the default toggle inside 'tecnico'
                 const btnBiennio1 = document.getElementById('btn-biennio-1');
                 const primoBiennioOrari = document.getElementById('primo-biennio-orari');
-                
-                // Add checks to prevent errors if elements don't exist
-                if (btnBiennio1) btnBiennio1.classList.add('active');
-                if (primoBiennioOrari) primoBiennioOrari.style.display = 'block';
+                if (btnBiennio1) btnBiennio1.classList.add('active'); // Attiva il primo bottone di default
+                if (primoBiennioOrari) primoBiennioOrari.style.display = 'block'; // Mostra la prima tabella di default
+            }
+            
+            // Gestione AVVIO/STOP dello slideshow
+            if (tabName === 'galleria') {
+                clearTimeout(slideshowTimeout); // Sicurezza: ferma timer precedenti
+                slideIndex = 0; // Ricomincia dalla prima slide
+                setTimeout(showSlides, 50); // Avvia lo slideshow (con leggero ritardo)
+            } else {
+                clearTimeout(slideshowTimeout); // Ferma lo slideshow se si esce dalla tab galleria
+                // Nascondi tutte le slide quando si esce per sicurezza
+                 const slides = document.querySelectorAll("#galleria .slide");
+                 slides.forEach(slide => { if (slide) slide.style.display = 'none'; });
             }
         }
 
-        // Resets toggles *only* within the #tecnico tab to avoid conflicts
+        // Resetta i toggle *solo* nella tab 'tecnico'
         function resetToggleButtons() {
-            // Find sections only within #tecnico
             const allSections = document.querySelectorAll('#tecnico .orari-section');
             allSections.forEach(sec => {
                 if (sec) sec.style.display = 'none';
             });
-            // Find buttons only within #tecnico
             const allButtons = document.querySelectorAll('#tecnico .toggle-buttons .toggle-btn');
             allButtons.forEach(btn => {
                 if (btn) btn.classList.remove('active');
             });
         }
 
-        // Toggles tables *only* within the #tecnico tab
+        // Mostra/Nasconde tabelle *solo* nella tab 'tecnico'
         function toggleTables(tableId, buttonId) {
-            // Check if we are actually on the #tecnico tab before proceeding
             const tecnicoTabContent = document.getElementById('tecnico');
-            if (!tecnicoTabContent || !tecnicoTabContent.classList.contains('active')) {
-                // If not on the tecnico tab, do nothing to avoid errors
-                return; 
-            }
+            if (!tecnicoTabContent || !tecnicoTabContent.classList.contains('active')) return; 
 
             const table = document.getElementById(tableId);
             const button = document.getElementById(buttonId);
             
-            // Check if elements exist before interacting
             if (!table || !button) {
                 console.error("Toggle element not found:", tableId, buttonId);
                 return;
             }
 
             const isCurrentlyActive = button.classList.contains('active');
+            resetToggleButtons(); // Nascondi/Disattiva tutto prima
 
-            // Reset buttons/sections within #tecnico before showing the new one
-            resetToggleButtons(); 
-
-            // Show the clicked section only if it wasn't already active
-            if (!isCurrentlyActive) {
+            if (!isCurrentlyActive) { // Se non era attivo, mostralo/attivalo
                 table.style.display = 'block';
                 button.classList.add('active');
-                // Optional: Scroll the specific table into view if needed
-                // table.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            } else {
-                 // If clicked again, it stays hidden because resetToggleButtons was called
-                 // If you want clicking again to *show* it, add logic here.
-                 // For now, clicking an active button does nothing (it gets hidden by reset).
-            }
+            } 
+            // Se era già attivo, resetToggleButtons lo ha già nascosto/disattivato
         }
 
-        // Initial load: Show the 'home' tab by default
+        // Caricamento iniziale della pagina
         document.addEventListener('DOMContentLoaded', () => {
-            // Make sure the initial 'home' tab elements exist before showing it
             if (document.getElementById('home') && document.querySelector('.tab[onclick="showTab(\'home\')"]')) {
-                 showTab('home');
+                 showTab('home'); // Mostra la tab home di default
             } else {
                  console.error("Initial 'home' tab content or button not found!");
-                 // Fallback: try to show the first available tab if home is missing
+                 // Fallback: prova a mostrare la prima tab disponibile
                  const firstTabButton = document.querySelector('.tab');
                  if (firstTabButton && firstTabButton.hasAttribute('onclick')) {
-                     const firstTabName = firstTabButton.getAttribute('onclick').match(/showTab\('([^']+)'\)/);
-                     if (firstTabName && firstTabName[1] && document.getElementById(firstTabName[1])) {
-                         showTab(firstTabName[1]);
+                     const firstTabNameMatch = firstTabButton.getAttribute('onclick').match(/showTab\('([^']+)'\)/);
+                     if (firstTabNameMatch && firstTabNameMatch[1] && document.getElementById(firstTabNameMatch[1])) {
+                         showTab(firstTabNameMatch[1]);
                      }
                  }
             }
         });
+
+    // ========= CODICE SLIDESHOW AUTOMATICO =========
+    let slideIndex = 0;
+    let slideshowTimeout; // Variabile per gestire il timer
+
+    function showSlides() {
+        let i;
+        const slides = document.querySelectorAll("#galleria .slide"); // Seleziona solo slide dentro #galleria
+        const dotsContainer = document.querySelector("#galleria .dots-container");
+        let dots = []; // Array per i puntini, se presenti
+
+        // Se non ci sono slide nella galleria, non fare nulla e ferma il timer
+        if (slides.length === 0) {
+            clearTimeout(slideshowTimeout); 
+            // console.log("Nessuna slide trovata nella galleria."); // Per debug
+            return; 
+        }
+
+        // Genera i puntini se il contenitore esiste
+        if (dotsContainer) {
+             dotsContainer.innerHTML = ''; // Pulisci puntini precedenti
+             for (i = 0; i < slides.length; i++) {
+                 const dot = document.createElement('span');
+                 dot.classList.add('dot');
+                 dot.setAttribute('onclick', `currentSlide(${i + 1})`); 
+                 dotsContainer.appendChild(dot);
+             }
+             dots = dotsContainer.getElementsByClassName("dot"); // Riempi l'array dots
+        }
+
+        // Nascondi tutte le slide
+        for (i = 0; i < slides.length; i++) {
+            if (slides[i]) slides[i].style.display = "none";
+        }
+
+        // Gestione indice slide
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1; }
+        if (slideIndex < 1) { slideIndex = slides.length; } 
+
+        // Mostra la slide corrente (con controllo di esistenza)
+        if (slides[slideIndex - 1]) { 
+           slides[slideIndex - 1].style.display = "block";
+        } else {
+            console.error("Slide non trovata all'indice:", slideIndex - 1);
+            clearTimeout(slideshowTimeout); // Ferma se c'è un problema
+            return;
+        }
+
+
+        // Attiva il puntino corrente (con controllo di esistenza)
+        if (dots.length > 0 && dots[slideIndex - 1]) { 
+            for (i = 0; i < dots.length; i++) {
+                if (dots[i]) dots[i].classList.remove("active");
+            }
+            dots[slideIndex - 1].classList.add("active");
+        }
+        
+        // Cancella il timer precedente e impostane uno nuovo
+        clearTimeout(slideshowTimeout); 
+        slideshowTimeout = setTimeout(showSlides, 4000); // Cambia immagine ogni 4 secondi (4000 ms)
+    }
+    
+    // Funzione per andare a una slide specifica (chiamata dai puntini)
+    function currentSlide(n) {
+      clearTimeout(slideshowTimeout); // Ferma il timer automatico
+      slideIndex = n - 1; // Imposta l'indice (-1 perché showSlides lo incrementerà subito)
+      showSlides(); // Mostra la slide scelta e riavvia il timer
+    }
+    // ========= FINE CODICE SLIDESHOW AUTOMATICO =========
     </script>
 </body>
 </html>
